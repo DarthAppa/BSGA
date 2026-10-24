@@ -1,0 +1,18 @@
+---
+// Page de retour après l'envoi du formulaire sans JavaScript (redirection Web3Forms).
+import Base from '../layouts/Base.astro';
+import { CONTACT } from '../site.js';
+---
+
+<Base titre="Demande envoyée" description="Votre demande de devis est bien envoyée à BSGA." noindex>
+    <main id="contenu" class="hero">
+        <div class="wrap flex flex-col items-start gap-5 py-20 md:py-28">
+            <h1 class="text-4xl font-bold text-accentClair md:text-5xl">Merci, votre demande est envoyée</h1>
+            <p class="max-w-2xl text-lg text-encreDouce">
+                Nous vous répondons rapidement pour fixer votre devis. Pour une demande urgente, appelez-nous au
+                <a href={`tel:${CONTACT.telephoneLien}`} class="lien">{CONTACT.telephone}</a>.
+            </p>
+            <a href="index.html" class="btn">Retour à l'accueil</a>
+        </div>
+    </main>
+</Base>

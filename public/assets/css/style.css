@@ -1,26 +1,84 @@
 /* ==========================================
-   BSGA — styles faits main
-   Tout ce que Tailwind ne fait pas bien : variables, composants, pages légales.
+   BSGA - styles faits main
+   Tout ce que Tailwind ne fait pas bien : polices, variables, composants, formulaire, pages légales.
    Chaque couleur = un token de tailwind.config.cjs (mêmes valeurs, à modifier aux deux endroits).
-   VALEURS PROVISOIRES : identité visuelle définitive en phase 2.
+   Identité « noir et or » (maquette Figma, proposition 1).
    ========================================== */
+
+/* ===== POLICES (hébergées sur le site, licence OFL : assets/fonts/LICENCES.txt) ===== */
+@font-face {
+    font-family: 'Fira Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/fira-sans-latin-400-normal.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Fira Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('../fonts/fira-sans-latin-500-normal.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Fira Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('../fonts/fira-sans-latin-600-normal.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Playfair Display';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('../fonts/playfair-display-latin-600-normal.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Playfair Display';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('../fonts/playfair-display-latin-700-normal.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Playfair Display';
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/playfair-display-latin-400-italic.woff2') format('woff2');
+}
 
 /* ===== VARIABLES ===== */
 :root {
-    --fond: #ffffff;
-    --surface: #f3f6f5;
-    --encre: #17242a;
-    --encre-douce: #4d5b61;
-    --ligne: #d5dddb;
-    --accent: #1f6f5c;
-    --accent-fonce: #16523f;
-    --rayon: 10px;
+    --fond: #0e0d0c;
+    --surface: #1a1816;
+    --surface-haute: #24211e;
+    --encre: #f4efe7;
+    --encre-douce: #b8afa2;
+    --ligne: #5c4b2f;
+    --accent: #c9a45c;
+    --accent-clair: #e3c78e;
+    --sur-accent: #14110d;
+    --rayon: 8px;
+    --rayon-grand: 16px;
+    --police-titre: 'Playfair Display', georgia, 'Times New Roman', serif;
+    color-scheme: dark;
 }
 
 /* ===== BASE ===== */
+body {
+    line-height: 1.6;
+}
+
 .wrap {
     width: 100%;
-    max-width: 1140px;
+    max-width: 1180px;
     margin-inline: auto;
     padding-inline: 16px;
 }
@@ -31,9 +89,16 @@
     }
 }
 
+h1,
+h2,
+.titre {
+    font-family: var(--police-titre);
+    line-height: 1.18;
+}
+
 :focus-visible {
-    outline: 3px solid var(--accent);
-    outline-offset: 2px;
+    outline: 3px solid var(--accent-clair);
+    outline-offset: 3px;
 }
 
 .lien-evitement {
@@ -42,13 +107,23 @@
     top: -60px;
     z-index: 100;
     padding: 10px 14px;
-    background: var(--encre);
-    color: var(--fond);
+    background: var(--accent);
+    color: var(--sur-accent);
     border-radius: var(--rayon);
 }
 
 .lien-evitement:focus {
     top: 8px;
+}
+
+.lien {
+    color: var(--accent-clair);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.lien:hover {
+    color: var(--encre);
 }
 
 /* ===== EN-TÊTE ===== */
@@ -60,16 +135,34 @@
     border-bottom: 1px solid var(--ligne);
 }
 
-.nav-link {
-    color: var(--encre);
-    text-decoration: none;
+.logo {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
 }
 
-.nav-link:hover,
+.logo img {
+    display: block;
+    width: auto;
+    height: 40px;
+}
+
+.nav-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--encre);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+}
+
+.nav-link:hover {
+    color: var(--accent-clair);
+}
+
 .nav-link[aria-current='page'] {
-    color: var(--accent);
-    text-decoration: underline;
-    text-underline-offset: 4px;
+    color: var(--accent-clair);
+    border-bottom-color: var(--accent);
 }
 
 /* ===== BOUTONS ===== */
@@ -77,56 +170,234 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 44px;
-    padding: 10px 18px;
+    gap: 8px;
+    min-height: 48px;
+    padding: 12px 24px;
     border: 2px solid var(--accent);
     border-radius: var(--rayon);
     background: var(--accent);
-    color: var(--fond);
+    color: var(--sur-accent);
     font-weight: 600;
+    text-align: center;
     text-decoration: none;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
 }
 
 .btn:hover {
-    background: var(--accent-fonce);
-    border-color: var(--accent-fonce);
+    background: var(--accent-clair);
+    border-color: var(--accent-clair);
 }
 
 .btn--secondaire {
     background: transparent;
-    color: var(--accent);
+    color: var(--accent-clair);
 }
 
 .btn--secondaire:hover {
-    background: var(--surface);
-    color: var(--accent-fonce);
+    background: var(--surface-haute);
+    color: var(--encre);
 }
 
-/* ===== PRESTATIONS ===== */
-.prestation {
+.btn[disabled] {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+/* ===== HAUT DE PAGE ===== */
+.hero {
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(
+            ellipse 70% 60% at 75% 10%,
+            color-mix(in srgb, var(--accent) 22%, transparent),
+            transparent 70%
+        ),
+        linear-gradient(170deg, var(--surface-haute) 0%, var(--fond) 75%);
+    border-bottom: 1px solid var(--ligne);
+}
+
+.accroche {
+    font-family: var(--police-titre);
+    font-style: italic;
+    font-size: 1.375rem;
+    line-height: 1.4;
+}
+
+/* ===== CARTES, PASTILLES, ÉTAPES ===== */
+.carte {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--ligne);
+    border-radius: var(--rayon);
+    color: var(--encre);
+    text-decoration: none;
+    transition: border-color 0.2s ease;
+}
+
+a.carte:hover {
+    border-color: var(--accent);
+}
+
+a.carte:hover .carte-lien {
+    text-decoration: underline;
+}
+
+.carte-lien {
+    margin-top: auto;
+    color: var(--accent-clair);
+    font-weight: 500;
+}
+
+.pastille {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--ligne);
+    border-radius: 999px;
+    color: var(--accent);
+}
+
+.pastille svg {
+    width: 24px;
+    height: 24px;
+}
+
+.etape-num {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--sur-accent);
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
+.encart {
+    background: var(--surface-haute);
+    border: 1px solid var(--accent);
+    border-radius: var(--rayon-grand);
+}
+
+.liste-communes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.liste-communes li {
+    padding: 4px 12px;
+    border: 1px solid var(--ligne);
+    border-radius: 999px;
+    font-size: 0.9375rem;
+}
+
+/* ===== FORMULAIRE DE DEVIS ===== */
+.champ {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    padding: 20px;
+}
+
+.champ label,
+.champ legend {
+    font-weight: 500;
+}
+
+.champ input,
+.champ select,
+.champ textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 14px;
     background: var(--fond);
     border: 1px solid var(--ligne);
     border-radius: var(--rayon);
+    color: var(--encre);
+    font: inherit;
+}
+
+.champ textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.champ input:focus-visible,
+.champ select:focus-visible,
+.champ textarea:focus-visible {
+    border-color: var(--accent);
+}
+
+.champ input[aria-invalid='true'],
+.champ select[aria-invalid='true'] {
+    border-color: var(--accent-clair);
+    border-width: 2px;
+}
+
+.aide {
+    color: var(--encre-douce);
+    font-size: 0.875rem;
+}
+
+.erreur {
+    color: var(--accent-clair);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* Champ piège anti-spam : invisible pour les visiteurs, rempli par les robots */
+.piege {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.estimation-prix {
+    font-family: var(--police-titre);
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--accent-clair);
+    line-height: 1.1;
 }
 
 /* ===== PIED DE PAGE ===== */
 .site-footer {
-    border-top: 1px solid var(--ligne);
-    background: var(--surface);
+    border-top: 1px solid var(--accent);
+    background: var(--fond);
 }
 
 .footer-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     color: var(--encre);
     text-decoration: none;
 }
 
 .footer-link:hover {
-    color: var(--accent);
+    color: var(--accent-clair);
     text-decoration: underline;
+}
+
+.signature {
+    font-family: var(--police-titre);
+    font-style: italic;
+    font-size: 1.375rem;
+    color: var(--accent);
 }
 
 /* ===== PAGES LÉGALES ===== */
@@ -136,15 +407,16 @@
 }
 
 .legal h1 {
-    font-size: 2rem;
+    font-size: 2.25rem;
     font-weight: 700;
-    line-height: 1.2;
+    color: var(--accent);
 }
 
 .legal h2 {
     margin-top: 2rem;
-    font-size: 1.25rem;
+    font-size: 1.375rem;
     font-weight: 600;
+    color: var(--accent-clair);
 }
 
 .legal p {
@@ -152,7 +424,7 @@
 }
 
 .legal a {
-    color: var(--accent);
+    color: var(--accent-clair);
     text-decoration: underline;
 }
 
@@ -178,5 +450,29 @@
         animation-duration: 0.01ms !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
+    }
+}
+
+/* ===== MENU MOBILE ===== */
+.menu-bouton {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--ligne);
+    border-radius: var(--rayon);
+    color: var(--encre);
+    cursor: pointer;
+}
+
+/* Avec JS, le menu est replié par défaut ; sans JS, il reste visible */
+.js .menu-mobile:not(.ouvert) {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .menu-bouton,
+    .menu-mobile {
+        display: none;
     }
 }

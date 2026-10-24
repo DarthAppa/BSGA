@@ -1,29 +1,47 @@
 ---
-// Pied de page commun : coordonnées, zone, liens légaux.
-import { SITE, CONTACT } from '../site.js';
+// Pied de page commun : coordonnées, pages, liens légaux, signature.
+import Icone from './Icone.astro';
+import { SITE, CONTACT, RESEAUX } from '../site.js';
 ---
 
 <footer class="site-footer">
-    <div class="wrap flex flex-col gap-8 py-10">
-        <div class="grid gap-8 md:grid-cols-3">
-            <div class="flex flex-col gap-2">
-                <p class="text-lg font-bold">{SITE.nom}</p>
-                <p class="text-sm text-encreDouce">{SITE.accroche}.</p>
+    <div class="wrap flex flex-col gap-10 py-12">
+        <div class="grid gap-10 md:grid-cols-3">
+            <div class="flex flex-col gap-3">
+                <img src="assets/img/logo-bsga.svg" alt={SITE.nom} width="146" height="50" loading="lazy" />
+                <p class="text-encreDouce">{SITE.accroche}.</p>
             </div>
-            <div class="flex flex-col gap-2 text-sm">
-                <p class="font-semibold">Nous contacter</p>
-                <a href={`tel:${CONTACT.telephoneLien}`} class="footer-link">{CONTACT.telephone}</a>
-                <a href={`mailto:${CONTACT.email}`} class="footer-link">{CONTACT.email}</a>
+            <div class="flex flex-col gap-1">
+                <h2 class="font-sans text-base font-semibold text-accent">Nous contacter</h2>
+                <a href={`tel:${CONTACT.telephoneLien}`} class="footer-link gap-3">
+                    <Icone nom="telephone" classe="w-5 h-5 text-accent" />{CONTACT.telephone}
+                </a>
+                <a href={`mailto:${CONTACT.email}`} class="footer-link gap-3 break-all">
+                    <Icone nom="email" classe="w-5 h-5 shrink-0 text-accent" />{CONTACT.email}
+                </a>
+                <p class="flex items-center gap-3 min-h-11">
+                    <Icone nom="lieu" classe="w-5 h-5 text-accent" />{CONTACT.ville} ({CONTACT.codePostal}) et alentours
+                </p>
                 {CONTACT.horaires && <p class="text-encreDouce">{CONTACT.horaires}</p>}
             </div>
-            <div class="flex flex-col gap-2 text-sm">
-                <p class="font-semibold">Informations</p>
+            <div class="flex flex-col gap-1">
+                <h2 class="font-sans text-base font-semibold text-accent">Le site</h2>
+                <a href="prestations.html" class="footer-link">Nos prestations</a>
+                <a href="devis.html" class="footer-link">Demander un devis</a>
+                <a href="contact.html" class="footer-link">Contact et zone d'intervention</a>
+                {RESEAUX.avisGoogle && <a href={RESEAUX.avisGoogle} class="footer-link">Nos avis Google</a>}
+                {RESEAUX.linkedin && <a href={RESEAUX.linkedin} class="footer-link">LinkedIn</a>}
+            </div>
+        </div>
+
+        <p class="signature text-center">{SITE.signature}</p>
+
+        <div class="flex flex-col gap-2 border-t border-ligne pt-5 text-sm text-encreDouce sm:flex-row sm:items-center sm:justify-between">
+            <p>© {SITE.nom}, {CONTACT.ville} ({CONTACT.codePostal}).</p>
+            <div class="flex flex-wrap gap-x-6">
                 <a href="mentions-legales.html" class="footer-link">Mentions légales</a>
                 <a href="confidentialite.html" class="footer-link">Confidentialité</a>
             </div>
         </div>
-        <p class="border-t border-ligne pt-5 text-xs text-encreDouce">
-            © {SITE.nom}, {CONTACT.ville} ({CONTACT.codePostal}).
-        </p>
     </div>
 </footer>

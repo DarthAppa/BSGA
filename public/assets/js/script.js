@@ -1,5 +1,5 @@
 // ==========================================
-//   BSGA — Script principal (menu, lien actif)
+//   BSGA - Script principal (menu, lien actif)
 // ==========================================
 document.documentElement.classList.replace('no-js', 'js');
 
@@ -16,15 +16,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileMenu = document.getElementById('mobile-menu');
     if (burger && mobileMenu) {
         const ouvrir = (ouvert) => {
-            mobileMenu.classList.toggle('hidden', !ouvert);
+            mobileMenu.classList.toggle('ouvert', ouvert);
             burger.setAttribute('aria-expanded', String(ouvert));
+            burger.setAttribute('aria-label', ouvert ? 'Fermer le menu' : 'Ouvrir le menu');
         };
-        burger.addEventListener('click', () => ouvrir(mobileMenu.classList.contains('hidden')));
+        burger.addEventListener('click', () => ouvrir(!mobileMenu.classList.contains('ouvert')));
         mobileMenu.addEventListener('click', (e) => {
             if (e.target.closest('a')) ouvrir(false);
         });
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !mobileMenu.classList.contains('hidden')) {
+            if (e.key === 'Escape' && mobileMenu.classList.contains('ouvert')) {
                 ouvrir(false);
                 burger.focus();
             }
