@@ -1,0 +1,55 @@
+---
+// Gabarit de toutes les pages : un seul <head>, l'en-tête et le pied de page.
+// - La CSP et le referrer sont ajoutés APRÈS le build par tools/csp.mjs (sur dist/), juste après <meta charset>.
+// - Les scripts sont servis tels quels depuis public/assets/js (is:inline) : aucun script inline écrit à la main.
+import EnTete from '../components/EnTete.astro';
+import PiedDePage from '../components/PiedDePage.astro';
+import { SITE } from '../site.js';
+
+interface Props {
+    /** Sujet de la page, sans le nom du site (ajouté ici : « Sujet — BSGA ») */
+    titre: string;
+    description: string;
+    /** Scripts propres à la page (modules) */
+    scripts?: string[];
+    /** Page à ne pas référencer */
+    noindex?: boolean;
+    /** Page d'accueil : le titre est utilisé tel quel */
+    accueil?: boolean;
+}
+
+const { titre, description, scripts = [], noindex = false, accueil = false } = Astro.props;
+const titreComplet = accueil ? titre : `${titre} — ${SITE.nom}`;
+---
+
+<!doctype html>
+<html lang={SITE.langue} class="no-js">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{titreComplet}</title>
+        <meta name="description" content={description} />
+        <meta property="og:site_name" content={SITE.nom} />
+        <meta property="og:title" content={titreComplet} />
+        <meta property="og:description" content={description} />
+        {noindex && <meta name="robots" content="noindex" />}
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content={SITE.locale} />
+        <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+
+        <link rel="stylesheet" href="assets/css/style.css" />
+        <!-- Tailwind compilé (npm run build:css), APRÈS style.css : les utilitaires gardent la priorité. -->
+        <link rel="stylesheet" href="assets/css/tailwind.css" />
+        <script is:inline src="assets/js/script.js" defer></script>
+        {scripts.map((src) => (
+            <script is:inline type="module" src={src} />
+        ))}
+    </head>
+
+    <body class="bg-fond text-encre font-sans antialiased">
+        <a class="lien-evitement" href="#contenu">Aller au contenu</a>
+        <EnTete />
+        <slot />
+        <PiedDePage />
+    </body>
+</html>

@@ -1,0 +1,46 @@
+---
+// Mentions légales (LCEN art. 6 ; Code de la consommation art. L616-1 pour le médiateur).
+// Toutes les données viennent de src/site.js : compléter là-bas, pas ici.
+import Base from '../layouts/Base.astro';
+import PageLegale from '../components/PageLegale.astro';
+import { SITE, CONTACT, EDITEUR, HEBERGEUR, MEDIATEUR, SAP } from '../site.js';
+
+const aCompleter = 'en cours d’immatriculation';
+---
+
+<Base titre="Mentions légales" description={`Mentions légales du site ${SITE.nom} : éditeur, hébergeur, médiateur de la consommation.`}>
+    <PageLegale titre="Mentions légales">
+        <h2>Éditeur du site</h2>
+        <p>
+            {EDITEUR.nom}{EDITEUR.forme && `, ${EDITEUR.forme}`}<br />
+            SIRET : {EDITEUR.siret || aCompleter}<br />
+            Adresse : {EDITEUR.adresse || `${CONTACT.ville} (${CONTACT.codePostal})`}<br />
+            {EDITEUR.tva ? `N° de TVA : ${EDITEUR.tva}` : 'TVA non applicable, article 293 B du CGI'}<br />
+            Téléphone : <a href={`tel:${CONTACT.telephoneLien}`}>{CONTACT.telephone}</a><br />
+            Email : <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+        </p>
+        {EDITEUR.responsable && <p>Directrice de la publication : {EDITEUR.responsable}</p>}
+        {SAP.declaree && SAP.numero && <p>Déclaration de services à la personne n° {SAP.numero}</p>}
+        {EDITEUR.assureur && <p>Assurance responsabilité civile professionnelle : {EDITEUR.assureur}</p>}
+
+        <h2>Hébergeur</h2>
+        <p>
+            {HEBERGEUR.nom}<br />
+            {HEBERGEUR.adresse}<br />
+            <a href={HEBERGEUR.site}>{HEBERGEUR.site}</a>
+        </p>
+
+        <h2>Médiation de la consommation</h2>
+        {MEDIATEUR.nom ? (
+            <p>
+                En cas de litige non résolu avec nous, vous pouvez saisir gratuitement le médiateur de la consommation :
+                {MEDIATEUR.nom}, <a href={MEDIATEUR.site}>{MEDIATEUR.site}</a>.
+            </p>
+        ) : (
+            <p>Médiateur de la consommation : désignation en cours.</p>
+        )}
+
+        <h2>Propriété intellectuelle</h2>
+        <p>Les textes et visuels de ce site appartiennent à {SITE.nom}, sauf mention contraire.</p>
+    </PageLegale>
+</Base>

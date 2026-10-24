@@ -1,0 +1,13 @@
+node_modules/
+shots/
+docs-prives/
+Claude outputs/
+dist/
+.astro/
+# Pages et composants Astro : mis en forme à la main (le plugin Astro ajoute des espaces visibles)
+src/**/*.astro
+package-lock.json
+# Fichiers générés ou fournis tels quels
+public/assets/img/
+public/assets/icons/
+public/assets/css/tailwind.css

@@ -1,0 +1,47 @@
+---
+// Politique de confidentialité (RGPD). Tout nouveau prestataire ou nouvelle donnée collectée : mettre à jour cette page.
+import Base from '../layouts/Base.astro';
+import PageLegale from '../components/PageLegale.astro';
+import { SITE, CONTACT, EDITEUR } from '../site.js';
+---
+
+<Base titre="Confidentialité" description={`Comment ${SITE.nom} utilise et protège vos données personnelles.`}>
+    <PageLegale titre="Politique de confidentialité">
+        <h2>Responsable du traitement</h2>
+        <p>
+            {EDITEUR.responsable ? `${EDITEUR.responsable}, pour ` : ''}{SITE.nom}, joignable à
+            <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>.
+        </p>
+
+        <h2>Données collectées et utilisation</h2>
+        <p>
+            Quand vous nous appelez, nous écrivez ou remplissez le formulaire de demande de devis, nous recevons les
+            informations que vous nous donnez : nom, téléphone, email, adresse ou commune d’intervention, description de
+            votre besoin. Elles servent uniquement à vous répondre, à établir votre devis et, si vous l’acceptez, à
+            réaliser la prestation.
+        </p>
+        <p>Base légale : mesures précontractuelles prises à votre demande (article 6.1.b du RGPD).</p>
+
+        <h2>Durée de conservation</h2>
+        <p>
+            Sans suite de votre part, vos données sont supprimées 3 ans après notre dernier échange. Si vous devenez
+            client, les factures sont conservées 10 ans (obligation comptable).
+        </p>
+
+        <h2>Destinataires</h2>
+        <p>
+            Vos données ne sont ni vendues ni cédées. Le formulaire de devis passe par le service d’envoi Web3Forms, qui
+            transmet votre message à notre boîte email.
+        </p>
+
+        <h2>Cookies</h2>
+        <p>Ce site n’utilise aucun cookie publicitaire ni outil de suivi.</p>
+
+        <h2>Vos droits</h2>
+        <p>
+            Vous pouvez accéder à vos données, les corriger, les faire supprimer ou vous opposer à leur utilisation en
+            écrivant à <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>. En cas de désaccord, vous pouvez saisir la
+            CNIL (<a href="https://www.cnil.fr">www.cnil.fr</a>).
+        </p>
+    </PageLegale>
+</Base>

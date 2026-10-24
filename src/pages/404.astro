@@ -1,0 +1,16 @@
+---
+// Page introuvable (GitHub Pages sert dist/404.html).
+import Base from '../layouts/Base.astro';
+import { CONTACT } from '../site.js';
+---
+
+<Base titre="Page introuvable" description="Cette page n’existe pas ou a été déplacée." noindex>
+    <main id="contenu" class="wrap py-20 flex flex-col gap-4 max-w-2xl">
+        <h1 class="text-3xl font-bold">Cette page n’existe pas</h1>
+        <p class="text-encreDouce">Elle a peut-être été déplacée. Revenez à l’accueil ou appelez-nous directement.</p>
+        <div class="flex flex-wrap gap-3">
+            <a href="index.html" class="btn">Revenir à l’accueil</a>
+            <a href={`tel:${CONTACT.telephoneLien}`} class="btn btn--secondaire">Appeler le {CONTACT.telephone}</a>
+        </div>
+    </main>
+</Base>

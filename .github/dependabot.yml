@@ -1,0 +1,21 @@
+# Mises à jour de sécurité automatiques (PR ouvertes par Dependabot, vérifiées par la CI)
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      outils:
+        patterns: ['*']
+        update-types: [minor, patch]
+    ignore:
+      # Tailwind 4 change toute la config : migration à faire à la main, pas par Dependabot
+      - dependency-name: tailwindcss
+        update-types: ['version-update:semver-major']
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

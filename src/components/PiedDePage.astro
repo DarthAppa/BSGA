@@ -1,0 +1,29 @@
+---
+// Pied de page commun : coordonnées, zone, liens légaux.
+import { SITE, CONTACT } from '../site.js';
+---
+
+<footer class="site-footer">
+    <div class="wrap flex flex-col gap-8 py-10">
+        <div class="grid gap-8 md:grid-cols-3">
+            <div class="flex flex-col gap-2">
+                <p class="text-lg font-bold">{SITE.nom}</p>
+                <p class="text-sm text-encreDouce">{SITE.accroche}.</p>
+            </div>
+            <div class="flex flex-col gap-2 text-sm">
+                <p class="font-semibold">Nous contacter</p>
+                <a href={`tel:${CONTACT.telephoneLien}`} class="footer-link">{CONTACT.telephone}</a>
+                <a href={`mailto:${CONTACT.email}`} class="footer-link">{CONTACT.email}</a>
+                {CONTACT.horaires && <p class="text-encreDouce">{CONTACT.horaires}</p>}
+            </div>
+            <div class="flex flex-col gap-2 text-sm">
+                <p class="font-semibold">Informations</p>
+                <a href="mentions-legales.html" class="footer-link">Mentions légales</a>
+                <a href="confidentialite.html" class="footer-link">Confidentialité</a>
+            </div>
+        </div>
+        <p class="border-t border-ligne pt-5 text-xs text-encreDouce">
+            © {SITE.nom}, {CONTACT.ville} ({CONTACT.codePostal}).
+        </p>
+    </div>
+</footer>

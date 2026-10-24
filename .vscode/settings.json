@@ -1,0 +1,23 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit"
+  },
+  "css.validate": false,
+  "stylelint.validate": ["css"],
+  "eslint.useFlatConfig": true,
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "tailwindCSS.includeLanguages": { "html": "html", "astro": "html" },
+  "files.exclude": { "shots": true, ".astro": true },
+  "search.exclude": {
+    "node_modules": true,
+    "shots": true,
+    "dist": true,
+    "package-lock.json": true
+  },
+  "cSpell.language": "fr,en",
+  "cSpell.words": ["BSGA", "Grasse", "Tailwind", "Playwright", "Astro", "Web3Forms", "intendance"]
+}

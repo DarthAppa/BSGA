@@ -1,0 +1,57 @@
+// Vérification complète avant push / pull request.
+// Usage : npm run verif            (tout : construit le site dans dist/, puis contrôles, tests et captures
+//                                   desktop + mobile de chaque page)
+//         npm run verif -- --rapide (sans les captures)
+// Code de sortie 1 si une étape échoue : le push / la PR sont alors bloqués.
+import { spawnSync } from 'node:child_process';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
+
+const rapide = process.argv.includes('--rapide');
+const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
+// Pages du site construit : connues seulement après l'étape « Construction du site »
+const pages = () => (existsSync('dist') ? readdirSync('dist').filter((f) => f.endsWith('.html')) : []);
+const pagesSources = () =>
+    pages()
+        .map((f) => `dist/${f}`)
+        .join(' ');
+
+// Une étape = [nom, commande] ; la commande peut être une fonction (calculée au moment de l'étape)
+const etapes = [
+    ['Formatage (Prettier)', 'npx --no-install prettier --check . --log-level warn'],
+    ['JavaScript (ESLint)', 'npx --no-install eslint . --max-warnings 0'],
+    ['CSS (Stylelint)', 'npx --no-install stylelint "**/*.css"'],
+    ['Construction du site (Tailwind + Astro + CSP)', 'npm run build'],
+    ['HTML (html-validate)', () => `npx --no-install html-validate ${pagesSources()}`],
+    ['Règles maison (CLAUDE.md)', 'node tools/regles.mjs'],
+    ['Classes Tailwind présentes', 'node tools/classes-tailwind.mjs'],
+    ['CSP à jour', 'node tools/csp.mjs --check'],
+];
+for (const [script, nom] of [['test:devis', 'Tests de l’outil de devis']])
+    if (pkg.scripts?.[script]) etapes.push([nom, `npm run ${script}`]);
+// Dépendances : bloque sur une faille critique. Les outils de build (Tailwind 3 → braces) ont des
+// alertes « high » sans correctif qui ne concernent que la compilation sur le PC, pas le site publié.
+etapes.push(['Audit des dépendances (npm audit)', 'npm audit --audit-level=critical']);
+if (!rapide)
+    etapes.push(['Rendu de chaque page (390px + 1280px)', () => pages().map((p) => `node tools/screenshot.mjs ${p}`)]);
+
+const resultats = [];
+for (const [nom, commande] of etapes) {
+    const cmds = [typeof commande === 'function' ? commande() : commande].flat();
+    const debut = Date.now();
+    let ok = true;
+    for (const cmd of cmds) {
+        console.log(`\n━━ ${nom}\n$ ${cmd}`);
+        ok = spawnSync(cmd, { shell: true, stdio: 'inherit' }).status === 0 && ok;
+    }
+    resultats.push({ nom, ok, s: ((Date.now() - debut) / 1000).toFixed(1) });
+}
+
+console.log('\n━━━━━━━━━━━━ Bilan ━━━━━━━━━━━━');
+for (const r of resultats) console.log(`${r.ok ? '✓' : '✗'} ${r.nom} (${r.s}s)`);
+const echecs = resultats.filter((r) => !r.ok);
+if (echecs.length) {
+    console.log(`\n${echecs.length} étape(s) en échec : corriger avant le push / la pull request.`);
+    console.log('Astuce : `npm run format` corrige le formatage, `npm run lint:fix` une partie du JS/CSS.');
+    process.exit(1);
+}
+console.log(`\nTout est vert${rapide ? ' (sans captures)' : ''} : prêt pour la pull request.`);

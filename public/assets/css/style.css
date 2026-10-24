@@ -1,0 +1,182 @@
+/* ==========================================
+   BSGA — styles faits main
+   Tout ce que Tailwind ne fait pas bien : variables, composants, pages légales.
+   Chaque couleur = un token de tailwind.config.cjs (mêmes valeurs, à modifier aux deux endroits).
+   VALEURS PROVISOIRES : identité visuelle définitive en phase 2.
+   ========================================== */
+
+/* ===== VARIABLES ===== */
+:root {
+    --fond: #ffffff;
+    --surface: #f3f6f5;
+    --encre: #17242a;
+    --encre-douce: #4d5b61;
+    --ligne: #d5dddb;
+    --accent: #1f6f5c;
+    --accent-fonce: #16523f;
+    --rayon: 10px;
+}
+
+/* ===== BASE ===== */
+.wrap {
+    width: 100%;
+    max-width: 1140px;
+    margin-inline: auto;
+    padding-inline: 16px;
+}
+
+@media (min-width: 768px) {
+    .wrap {
+        padding-inline: 32px;
+    }
+}
+
+:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.lien-evitement {
+    position: absolute;
+    left: 8px;
+    top: -60px;
+    z-index: 100;
+    padding: 10px 14px;
+    background: var(--encre);
+    color: var(--fond);
+    border-radius: var(--rayon);
+}
+
+.lien-evitement:focus {
+    top: 8px;
+}
+
+/* ===== EN-TÊTE ===== */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--fond);
+    border-bottom: 1px solid var(--ligne);
+}
+
+.nav-link {
+    color: var(--encre);
+    text-decoration: none;
+}
+
+.nav-link:hover,
+.nav-link[aria-current='page'] {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+/* ===== BOUTONS ===== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 10px 18px;
+    border: 2px solid var(--accent);
+    border-radius: var(--rayon);
+    background: var(--accent);
+    color: var(--fond);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background: var(--accent-fonce);
+    border-color: var(--accent-fonce);
+}
+
+.btn--secondaire {
+    background: transparent;
+    color: var(--accent);
+}
+
+.btn--secondaire:hover {
+    background: var(--surface);
+    color: var(--accent-fonce);
+}
+
+/* ===== PRESTATIONS ===== */
+.prestation {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px;
+    background: var(--fond);
+    border: 1px solid var(--ligne);
+    border-radius: var(--rayon);
+}
+
+/* ===== PIED DE PAGE ===== */
+.site-footer {
+    border-top: 1px solid var(--ligne);
+    background: var(--surface);
+}
+
+.footer-link {
+    color: var(--encre);
+    text-decoration: none;
+}
+
+.footer-link:hover {
+    color: var(--accent);
+    text-decoration: underline;
+}
+
+/* ===== PAGES LÉGALES ===== */
+.legal {
+    max-width: 72ch;
+    line-height: 1.65;
+}
+
+.legal h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.legal h2 {
+    margin-top: 2rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.legal p {
+    margin-top: 0.75rem;
+}
+
+.legal a {
+    color: var(--accent);
+    text-decoration: underline;
+}
+
+.legal-maj {
+    color: var(--encre-douce);
+    font-size: 0.875rem;
+}
+
+.legal-liens {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--ligne);
+}
+
+/* ===== MOUVEMENT RÉDUIT ===== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
