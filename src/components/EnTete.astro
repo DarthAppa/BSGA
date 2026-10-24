@@ -1,38 +1,49 @@
 ---
-// En-tête commun à toutes les pages : nom, navigation, bouton d'appel, menu mobile.
-// Les pages prestations, devis et contact arrivent en phases 3 et 4 : liens à ajouter ici à ce moment-là.
+// En-tête commun à toutes les pages : logo, navigation, bouton d'appel, menu mobile.
+// Sans JS, le menu mobile reste visible sous l'en-tête (classe .no-js, voir style.css).
+import Icone from './Icone.astro';
 import { SITE, CONTACT } from '../site.js';
 
-const liens = [{ href: 'index.html', texte: 'Accueil' }];
+const liens = [
+    { href: 'index.html', texte: 'Accueil' },
+    { href: 'prestations.html', texte: 'Prestations' },
+    { href: 'devis.html', texte: 'Devis' },
+    { href: 'contact.html', texte: 'Contact' },
+];
 ---
 
 <header class="site-header">
     <div class="wrap flex items-center justify-between gap-4 py-3">
-        <a href="index.html" class="text-xl font-bold text-encre" aria-label={`${SITE.nom}, accueil`}>{SITE.nom}</a>
+        <a href="index.html" class="logo" aria-label={`${SITE.nom}, accueil`}>
+            <img src="assets/img/logo-bsga.svg" alt="" width="117" height="40" />
+        </a>
 
-        <nav class="hidden md:flex items-center gap-8 text-sm font-medium" aria-label="Navigation principale">
+        <nav class="hidden md:flex items-center gap-8 font-medium" aria-label="Navigation principale">
             {liens.map((l) => <a href={l.href} class="nav-link">{l.texte}</a>)}
         </nav>
 
         <div class="flex items-center gap-2">
-            <a href={`tel:${CONTACT.telephoneLien}`} class="btn">Appeler</a>
+            <a href={`tel:${CONTACT.telephoneLien}`} class="btn btn--secondaire hidden sm:inline-flex">
+                {CONTACT.telephone}
+            </a>
+            <a href={`tel:${CONTACT.telephoneLien}`} class="btn btn--secondaire sm:hidden" aria-label={`Appeler le ${CONTACT.telephone}`}>
+                <Icone nom="telephone" classe="w-5 h-5" />
+            </a>
             <button
                 type="button"
                 id="burger"
-                class="md:hidden grid place-items-center w-11 h-11 text-encre"
-                aria-label="Menu"
+                class="menu-bouton md:hidden"
+                aria-label="Ouvrir le menu"
                 aria-expanded="false"
                 aria-controls="mobile-menu"
             >
-                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                    <path d="M4 7h16M4 12h16M4 17h16" />
-                </svg>
+                <Icone nom="menu" classe="w-6 h-6" />
             </button>
         </div>
     </div>
 
-    <nav id="mobile-menu" class="md:hidden hidden border-t border-ligne" aria-label="Navigation mobile">
-        <div class="wrap py-4 flex flex-col gap-4 text-base font-medium">
+    <nav id="mobile-menu" class="menu-mobile md:hidden border-t border-ligne" aria-label="Navigation mobile">
+        <div class="wrap py-2 flex flex-col text-lg font-medium">
             {liens.map((l) => <a href={l.href} class="nav-link">{l.texte}</a>)}
         </div>
     </nav>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="150" viewBox="0 0 440 150" role="img" aria-labelledby="logo-titre">
+  <title id="logo-titre">BSGA</title>
+  <!-- Logo BSGA : B = balai, S = serpillière, G = gant, A = aspirateur. Source : design/logo/ -->
+  <g fill="none" stroke="#C9A45C" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <!-- B : balai (manche = jambage, brosse = panse basse) -->
+    <path d="M30 4 V120"/>
+    <path d="M30 22 H56 a19 19 0 0 1 0 38 H30"/>
+    <path d="M30 60 H62 a30 30 0 0 1 0 60 H30"/>
+    <rect x="22" y="55" width="44" height="10" rx="3" fill="#C9A45C" stroke-width="0"/>
+    <g stroke-width="3.5">
+      <path d="M42 74 V110"/><path d="M52 72 V112"/><path d="M62 72 V112"/><path d="M72 74 V110"/><path d="M81 78 V104"/>
+    </g>
+    <!-- S : serpillière (franges) ; goutte d'eau -->
+    <path d="M190 36 C184 20 170 18 158 18 C138 18 126 30 126 44 C126 60 142 64 158 70 C176 76 190 84 190 100 C190 112 176 120 158 120 C142 120 130 114 124 104"/>
+    <path d="M106 34 c-5 7 -7 11 -7 14 a7 7 0 0 0 14 0 c0 -3 -2 -7 -7 -14 Z" stroke-width="3.5"/>
+    <g stroke-width="3.5">
+      <path d="M136 118 q-4 8 1 16"/><path d="M148 121 q-4 8 1 16"/><path d="M160 121 q-4 8 1 16"/><path d="M172 119 q-4 8 1 16"/><path d="M183 113 q-4 8 1 16"/>
+    </g>
+    <!-- G : gant (doigts, poignet, couture) -->
+    <path d="M300 38 A50 50 0 1 0 311 79 H274"/>
+    <path d="M301 38 L311 29 M291 29 L299 18 M279 23 L284 10" stroke-width="7"/>
+    <path d="M222 108 L242 90" stroke-width="5"/>
+    <path d="M230 116 L250 98" stroke-width="5"/>
+    <path d="M226 52 A38 38 0 0 1 262 32" stroke-width="2.5" stroke-dasharray="4 5"/>
+    <!-- A : aspirateur (poignée, tube, cuve, brosse, roue) -->
+    <path d="M369 30 L340 116"/>
+    <path d="M385 30 L407 100"/>
+    <path d="M366 30 C366 14 388 14 388 30 Z"/>
+    <path d="M326 120 H356"/>
+    <rect x="348" y="70" width="60" height="26" rx="13" fill="#0E0D0C"/>
+    <circle cx="412" cy="112" r="9" fill="#0E0D0C"/>
+  </g>
+</svg>

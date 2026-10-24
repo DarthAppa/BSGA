@@ -1,0 +1,80 @@
+---
+// Contact et zone d'intervention (zones : src/site.js, étude : docs/zone-intervention.md).
+import Base from '../layouts/Base.astro';
+import Icone from '../components/Icone.astro';
+import { CONTACT, ZONES, RESEAUX } from '../site.js';
+import { TARIFS } from '../tarifs.js';
+
+const forfait = `${TARIFS.deplacement.elargie.toLocaleString('fr-FR')} €`;
+---
+
+<Base
+    titre="Contact"
+    description="Appelez ou écrivez à BSGA, entreprise de ménage à Grasse. Zone d'intervention : pays grassois, Valbonne, Cannes et alentours."
+>
+    <main id="contenu">
+        <section id="introduction" class="hero">
+            <div class="wrap flex flex-col gap-4 py-14 md:py-20">
+                <h1 class="text-4xl font-bold text-accentClair md:text-5xl">Contact</h1>
+                <p class="max-w-2xl text-lg text-encreDouce">
+                    Une question, une demande particulière ? Appelez-nous ou écrivez-nous, nous vous répondons rapidement.
+                </p>
+            </div>
+        </section>
+
+        <section id="coordonnees" class="wrap grid gap-4 py-12 md:grid-cols-3 md:py-16">
+            <h2 class="sr-only">Nos coordonnées</h2>
+            <a href={`tel:${CONTACT.telephoneLien}`} class="carte">
+                <span class="pastille"><Icone nom="telephone" /></span>
+                <h3 class="text-lg font-semibold">Téléphone</h3>
+                <p class="text-xl">{CONTACT.telephone}</p>
+                <span class="carte-lien">Appeler</span>
+            </a>
+            <a href={`mailto:${CONTACT.email}`} class="carte">
+                <span class="pastille"><Icone nom="email" /></span>
+                <h3 class="text-lg font-semibold">Email</h3>
+                <p class="break-all">{CONTACT.email}</p>
+                <span class="carte-lien">Écrire un email</span>
+            </a>
+            <a href="devis.html" class="carte">
+                <span class="pastille"><Icone nom="devis" /></span>
+                <h3 class="text-lg font-semibold">Demande de devis</h3>
+                <p class="text-encreDouce">Estimation en ligne et demande en quelques minutes.</p>
+                <span class="carte-lien">Faire une estimation</span>
+            </a>
+            {CONTACT.horaires && <p class="text-encreDouce md:col-span-3">Horaires : {CONTACT.horaires}</p>}
+            {(RESEAUX.avisGoogle || RESEAUX.linkedin) && (
+                <p class="flex flex-wrap gap-x-6 md:col-span-3">
+                    {RESEAUX.avisGoogle && <a href={RESEAUX.avisGoogle} class="lien">Nos avis Google</a>}
+                    {RESEAUX.linkedin && <a href={RESEAUX.linkedin} class="lien">LinkedIn</a>}
+                </p>
+            )}
+        </section>
+
+        <section id="zone-detail" class="bg-surface">
+            <div class="wrap flex flex-col gap-8 py-12 md:py-16">
+                <div class="flex flex-col gap-3">
+                    <h2 class="text-3xl font-semibold text-accent md:text-4xl">Zone d'intervention</h2>
+                    <p class="max-w-3xl text-encreDouce">
+                        Nous partons de {CONTACT.ville} ({CONTACT.codePostal}). Votre commune n'est pas dans la liste ?
+                        Appelez-nous : les grosses interventions (après chantier, après événement, remise en état) sont
+                        possibles plus loin, sur devis.
+                    </p>
+                </div>
+                <div class="grid gap-8 md:grid-cols-2">
+                    <div class="flex flex-col gap-4">
+                        <h3 class="text-xl font-semibold">Zone 1 : déplacement inclus</h3>
+                        <ul class="liste-communes">{ZONES.coeur.map((c) => <li>{c}</li>)}</ul>
+                    </div>
+                    <div class="flex flex-col gap-4">
+                        <h3 class="text-xl font-semibold">Zone 2 : forfait de déplacement de {forfait}</h3>
+                        <ul class="liste-communes">{ZONES.elargie.map((c) => <li>{c}</li>)}</ul>
+                        <p class="text-sm text-encreDouce">
+                            Nettoyage régulier en zone 2 : {TARIFS.minimumHeuresElargie} heures minimum par passage.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</Base>

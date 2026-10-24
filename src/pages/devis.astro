@@ -1,0 +1,152 @@
+---
+// Outil d'estimation + demande de devis (Web3Forms). Lire le skill `securite` avant de modifier ce formulaire.
+// Les prix viennent de src/tarifs.js et sont transmis au script par l'attribut data-tarifs (aucun prix dans le JS).
+// Sans JS : tous les champs sont visibles et le formulaire s'envoie directement à Web3Forms (retour sur merci.html).
+import Base from '../layouts/Base.astro';
+import { SITE, CONTACT, ZONES, PRESTATIONS, FORMULAIRE, EDITEUR } from '../site.js';
+import { TARIFS, MENTION_ESTIMATION } from '../tarifs.js';
+
+const donnees = JSON.stringify({ tarifs: TARIFS, zones: ZONES, email: CONTACT.email });
+const tva = EDITEUR.tva ? 'Prix TTC.' : 'TVA non applicable, article 293 B du CGI.';
+---
+
+<Base
+    titre="Demander un devis"
+    description="Estimez le prix de votre ménage à Grasse et alentours, puis envoyez votre demande de devis gratuit à BSGA."
+    scripts={['assets/js/devis.js']}
+>
+    <main id="contenu">
+        <section id="introduction" class="hero">
+            <div class="wrap flex flex-col gap-4 py-14 md:py-20">
+                <h1 class="text-4xl font-bold text-accentClair md:text-5xl">Demander un devis</h1>
+                <p class="max-w-2xl text-lg text-encreDouce">
+                    Une première estimation en quelques clics, puis votre demande nous arrive directement. Nous vous
+                    répondons pour fixer le prix exact, gratuitement.
+                </p>
+            </div>
+        </section>
+
+        <section id="formulaire" class="wrap py-12 md:py-16">
+            <h2 class="sr-only">Formulaire de demande de devis</h2>
+            {!FORMULAIRE.cleWeb3Forms && (
+                <p class="mb-6 rounded-lg border border-ligne p-4 text-encreDouce">
+                    L'envoi en ligne sera bientôt actif : en attendant, le bouton prépare un email avec votre demande. Vous
+                    pouvez aussi nous appeler au
+                    <a href={`tel:${CONTACT.telephoneLien}`} class="lien">{CONTACT.telephone}</a>.
+                </p>
+            )}
+            <form
+                id="form-devis"
+                action={FORMULAIRE.action}
+                method="POST"
+                class="grid gap-10 lg:grid-cols-5"
+                data-devis={donnees}
+                data-envoi-en-ligne={FORMULAIRE.cleWeb3Forms ? 'oui' : 'non'}
+            >
+                {FORMULAIRE.cleWeb3Forms && <input type="hidden" name="access_key" value={FORMULAIRE.cleWeb3Forms} />}
+                <input type="hidden" name="subject" value={`Demande de devis - site ${SITE.nom}`} />
+                <input type="hidden" name="from_name" value={`Site ${SITE.nom}`} />
+                <input type="hidden" name="redirect" value={`${SITE.url}merci.html`} />
+                <input type="hidden" name="estimation" id="champ-estimation" value="" />
+                <div class="piege" aria-hidden="true">
+                    <label for="botcheck">Ne pas remplir</label>
+                    <input type="checkbox" name="botcheck" id="botcheck" tabindex="-1" />
+                </div>
+
+                <div class="flex flex-col gap-8 lg:col-span-3">
+                    <fieldset class="carte gap-5">
+                        <legend class="px-2 font-titre text-2xl font-semibold text-accent">1. Votre besoin</legend>
+                        <div class="champ">
+                            <label for="prestation">Prestation</label>
+                            <select id="prestation" name="prestation" required>
+                                <option value="">Choisissez une prestation</option>
+                                {PRESTATIONS.map((p) => <option value={p.id}>{p.nom}</option>)}
+                            </select>
+                            <p class="erreur" id="erreur-prestation" hidden>Choisissez la prestation qui vous intéresse.</p>
+                        </div>
+                        <div class="champ">
+                            <label for="commune">Commune d'intervention</label>
+                            <select id="commune" name="commune" required>
+                                <option value="">Choisissez votre commune</option>
+                                <optgroup label="Zone 1 : déplacement inclus">
+                                    {ZONES.coeur.map((c) => <option value={c}>{c}</option>)}
+                                </optgroup>
+                                <optgroup label="Zone 2 : forfait de déplacement">
+                                    {ZONES.elargie.map((c) => <option value={c}>{c}</option>)}
+                                </optgroup>
+                                <option value="Autre commune">Autre commune</option>
+                            </select>
+                            <p class="erreur" id="erreur-commune" hidden>Choisissez votre commune, ou « Autre commune ».</p>
+                        </div>
+                        <div class="champ" data-mode="surface">
+                            <label for="surface">Surface à nettoyer (m²)</label>
+                            <input id="surface" name="surface" type="number" inputmode="numeric" min="5" max="2000" step="1" />
+                            <p class="aide">Pour la remise en état, l'après-chantier et l'après-événement.</p>
+                        </div>
+                        <div class="champ" data-mode="heures">
+                            <label for="heures">Durée souhaitée par passage (heures)</label>
+                            <input id="heures" name="heures" type="number" inputmode="decimal" min="1" max="12" step="0.5" />
+                            <p class="aide">Pour le nettoyage régulier. Repère : environ 2 heures pour 60 m².</p>
+                        </div>
+                        <div class="champ" data-mode="heures">
+                            <label for="frequence">Fréquence</label>
+                            <select id="frequence" name="frequence">
+                                <option>Chaque semaine</option>
+                                <option>Toutes les deux semaines</option>
+                                <option>Chaque mois</option>
+                                <option>Une seule fois</option>
+                            </select>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="carte gap-5">
+                        <legend class="px-2 font-titre text-2xl font-semibold text-accent">2. Vos coordonnées</legend>
+                        <div class="champ">
+                            <label for="nom">Nom</label>
+                            <input id="nom" name="nom" type="text" autocomplete="name" required maxlength="80" />
+                            <p class="erreur" id="erreur-nom" hidden>Indiquez votre nom pour que nous puissions vous répondre.</p>
+                        </div>
+                        <div class="grid gap-5 sm:grid-cols-2">
+                            <div class="champ">
+                                <label for="telephone">Téléphone</label>
+                                <input id="telephone" name="telephone" type="tel" autocomplete="tel" maxlength="20" />
+                            </div>
+                            <div class="champ">
+                                <label for="email">Email</label>
+                                <input id="email" name="email" type="email" autocomplete="email" maxlength="120" />
+                            </div>
+                        </div>
+                        <p class="aide" id="aide-contact">Indiquez au moins un téléphone ou un email.</p>
+                        <p class="erreur" id="erreur-contact" hidden>Indiquez un téléphone ou un email valide pour recevoir votre devis.</p>
+                        <div class="champ">
+                            <label for="message">Précisions (facultatif)</label>
+                            <textarea id="message" name="message" maxlength="2000" placeholder="Nombre de pièces, état du logement, dates souhaitées…"></textarea>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="lg:col-span-2">
+                    <div class="encart flex flex-col gap-5 p-6 md:p-8 lg:sticky lg:top-28">
+                        <h3 class="font-titre text-2xl font-semibold text-accent">Votre estimation</h3>
+                        <div aria-live="polite" class="flex flex-col gap-2">
+                            <p id="estimation-prix" class="estimation-prix">-</p>
+                            <p id="estimation-detail" class="text-encreDouce">
+                                Choisissez une prestation, votre commune et la surface (ou la durée) pour voir une estimation.
+                            </p>
+                        </div>
+                        <p class="text-sm text-encreDouce">{MENTION_ESTIMATION} {tva}</p>
+                        <button type="submit" class="btn w-full" id="bouton-envoyer">Envoyer ma demande</button>
+                        <p id="statut-envoi" role="status" class="font-medium"></p>
+                        <p class="text-sm text-encreDouce">
+                            Vos informations servent uniquement à répondre à votre demande de devis. Responsable :
+                            {SITE.nom}. Elles sont conservées 3 ans au plus après notre dernier échange. Vous pouvez y accéder,
+                            les corriger ou les faire supprimer en écrivant à
+                            <a href={`mailto:${CONTACT.email}`} class="lien break-all">{CONTACT.email}</a>.
+                            <a href="confidentialite.html" class="lien">Politique de confidentialité</a>.
+                        </p>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </main>
+</Base>

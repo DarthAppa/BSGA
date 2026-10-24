@@ -1,0 +1,67 @@
+---
+// Détail des 5 prestations (données : src/site.js ; prix : src/tarifs.js).
+import Base from '../layouts/Base.astro';
+import Icone from '../components/Icone.astro';
+import { PRESTATIONS, EDITEUR } from '../site.js';
+import { TARIFS, MENTION_ESTIMATION } from '../tarifs.js';
+
+const euros = (n) => `${n.toLocaleString('fr-FR')} €`;
+function repere(id) {
+    const t = TARIFS.prestations[id];
+    if (!t || t.mode === 'sur-devis') return 'Forfait sur mesure, établi après un premier échange.';
+    if (t.mode === 'heures')
+        return `À partir de ${euros(t.parHeure)} de l'heure, ${t.minimumHeures} heures minimum par passage.`;
+    return `À partir de ${euros(t.parM2)} le m², ${euros(t.minimum)} minimum.`;
+}
+const tva = EDITEUR.tva ? 'Prix TTC.' : 'TVA non applicable, article 293 B du CGI.';
+const deplacement = `Déplacement inclus en zone 1, forfait de ${euros(TARIFS.deplacement.elargie)} par intervention en zone 2.`;
+---
+
+<Base
+    titre="Nos prestations"
+    description="Remise en état, nettoyage régulier, après chantier, après événement, intendance et conciergerie : le détail des prestations de ménage BSGA autour de Grasse."
+>
+    <main id="contenu">
+        <section id="introduction" class="hero">
+            <div class="wrap flex flex-col gap-4 py-14 md:py-20">
+                <h1 class="text-4xl font-bold text-accentClair md:text-5xl">Nos prestations</h1>
+                <p class="max-w-2xl text-lg text-encreDouce">
+                    Du ménage courant au grand nettoyage après travaux, chaque intervention commence par un devis gratuit.
+                </p>
+                <nav aria-label="Aller à une prestation" class="flex flex-wrap gap-x-6">
+                    {PRESTATIONS.map((p) => <a href={`#${p.id}`} class="footer-link text-accentClair">{p.nom}</a>)}
+                </nav>
+            </div>
+        </section>
+
+        <div class="wrap flex flex-col gap-6 py-12 md:py-16">
+            {PRESTATIONS.map((p) => (
+                <article id={p.id} class="carte scroll-mt-24 gap-5 md:flex-row md:gap-10 md:p-10">
+                    <span class="pastille"><Icone nom={p.icone} /></span>
+                    <div class="flex flex-1 flex-col gap-4">
+                        <h2 class="text-2xl font-semibold text-accent md:text-3xl">{p.nom}</h2>
+                        <p class="text-lg">{p.resume}</p>
+                        <ul class="grid gap-2 sm:grid-cols-2">
+                            {p.inclus.map((i) => (
+                                <li class="flex gap-2 text-encreDouce">
+                                    <Icone nom="coche" classe="mt-1 h-5 w-5 shrink-0 text-accent" />
+                                    {i}
+                                </li>
+                            ))}
+                        </ul>
+                        <p class="text-sm">
+                            <strong class="font-semibold">Tarif {p.prix}.</strong> <span class="text-encreDouce">{repere(p.id)}</span>
+                        </p>
+                        <div>
+                            <a href={`devis.html?prestation=${p.id}`} class="btn">Estimer cette prestation</a>
+                        </div>
+                    </div>
+                </article>
+            ))}
+            <p class="text-sm text-encreDouce">
+                {deplacement} {tva} {MENTION_ESTIMATION}
+                <a href="contact.html#zone-detail" class="lien">Voir les communes de chaque zone</a>.
+            </p>
+        </div>
+    </main>
+</Base>
